@@ -1,56 +1,62 @@
 ---
 name: plan-roblox
-description: Analyzes a decompiled Roblox map folder and generates either an ultra-comprehensive reverse engineering prompt (/plan-roblox <folder_path>) or immediately writes the complete ready-to-run Rayfield UI Mobile script hub without prompt generation (/go-script <folder_path> [language]).
+description: Universal reverse engineering and script architect for ANY decompiled Roblox map. Generates comprehensive or lightweight prompts (/plan-roblox-full, /plan-roblox-lite) or writes complete Rayfield UI Mobile script hubs directly (/go-script-full, /go-script-lite).
 ---
 
-# Plan Roblox: Decompiled Map Reverse Engineering & Script Hub Architect
+# Universal Plan Roblox: Reverse Engineering & Script Hub Architect
 
-This skill provides automated workflows to inspect, reverse engineer, and generate either an ultra-comprehensive Master Prompt or directly write a complete production-grade Roblox Script Hub using Rayfield UI Library (Mobile) for any decompiled map.
+This skill provides an automated, universal workflow to inspect, reverse engineer, and synthesize Roblox Script Hubs powered by the Rayfield UI Library (Mobile) for ANY decompiled Roblox map (Simulators, Tycoons, RPG/Anime, Combat, Obbies, etc.).
 
 ## Strict Formatting Directive
 - DO NOT use any emojis anywhere in the output, generated prompt, instructions, GUI titles, or code comments. Keep all output strictly professional and emoji-free.
 
+---
+
 ## Supported Commands
 
-### Command 1: Architecture & Master Prompt Mode
-```text
-/plan-roblox <folder_path>
-```
-Scans the decompiled map folder and outputs an ultra-comprehensive Master Prompt with full reverse-engineered intelligence and an 8-tab feature matrix.
+### 1. Architecture & Master Prompt Commands
+- `/plan-roblox-full <folder_path>` (or `/plan-roblox <folder_path>`):
+  Generates an exhaustive, feature-packed Master Prompt covering every detected game system across 8+ tabs.
+- `/plan-roblox-lite <folder_path>`:
+  Generates a lightweight, streamlined Master Prompt focusing strictly on core essentials (3-4 tabs: Core Farm, Key Teleports, Player Movement, Anti-AFK/Safety). Optimized for simple usage, minimal GUI footprint, and low-end mobile performance.
 
-### Command 2: Direct Script Generation Mode (One-Shot)
-```text
-/go-script <folder_path> [language]
-```
-Bypasses displaying the intermediate prompt and immediately synthesizes and writes the complete ready-to-run Luau script hub file in the specified language (e.g. `th` for Thai or `en` for English).
+### 2. Direct One-Shot Script Generation Commands (Bypasses Prompt Output)
+- `/go-script-full <folder_path> [language]` (or `/go-script <folder_path> [language]`):
+  Directly outputs the complete Full Script Hub (.lua) code in the specified language (`th` for Thai, `en` for English) without printing any intermediate prompt.
+- `/go-script-lite <folder_path> [language]`:
+  Directly outputs the lightweight, streamlined Script Hub (.lua) code in the specified language (`th` for Thai, `en` for English) without printing any intermediate prompt.
 
 Examples:
-- `/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 th`
-- `/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 en`
+- `/plan-roblox-full C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534`
+- `/plan-roblox-lite C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534`
+- `/go-script-full C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 th`
+- `/go-script-lite C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 en`
 
 ---
 
-## Step-by-Step Procedure for the Agent
+## Universal Map Analysis Procedure
 
 ### Step 1: Automated Static Scanning
-When either command is triggered with `<folder_path>`, execute the helper PowerShell script:
+When any command is executed, run the automated scanner:
 ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME\.gemini\config\plugins\superpowers\skills\plan-roblox\scripts\scan_roblox.ps1" -TargetFolder "<folder_path>"
 ```
-Capture and parse the resulting JSON data:
-- PlaceID: Extracted from _summary.txt
-- TotalLuaFiles: Total count of decompiled scripts
-- GameDataModules: Tables (Items, Eggs, Pets, Shops, Rebirths, etc.)
-- Services: Game services and controllers
-- RemotesFound: Discovered RemoteEvent and RemoteFunction names
-- RemoteCallExamples: Real syntax examples of FireServer / InvokeServer calls
-- UIComponents: Detected ScreenGuis, Frames, Tabs
-- KeyMechanicsDetected: Detected gameplay loops
+Parse the JSON output:
+- PlaceID: Extracted Place ID
+- TotalLuaFiles: Total scripts scanned
+- DetectedGenre: Identified genre (Simulator, Tycoon, RPG, Combat, etc.)
+- GameDataModules: Game tables and config modules
+- Services: Controllers and client/replicated services
+- RemotesFound: Discovered RemoteEvent and RemoteFunction instances
+- RemoteCallExamples: Actual FireServer / InvokeServer calling syntax
+- UIComponents: Discovered UI frames and screens
+- KeyMechanicsDetected: Specific gameplay mechanics detected
+- LiteFeaturesRecommended: Recommended features for Lite mode
 
 ### Step 2: Read Rayfield UI Mobile Documentation
-Ensure the generated script or plan aligns strictly with the Rayfield UI Mobile specification:
-- Read `references/Rayfield UI library Mobile.md` bundled with this skill (or local path `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`).
-- Utilize standard Rayfield Mobile elements:
+Ensure the code and prompts strictly adhere to:
+- `references/Rayfield UI library Mobile.md` bundled with this skill (or local path `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`).
+- Standard Rayfield Mobile components:
   - loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
   - Rayfield:CreateWindow() with ConfigurationSaving, LoadingTitle, Theme
   - Mobile Floating Action Button (draggable ScreenGui toggle button)
@@ -59,13 +65,13 @@ Ensure the generated script or plan aligns strictly with the Rayfield UI Mobile 
 
 ---
 
-## Branching Logic Based on Command
+## Execution Modes & Output Formats
 
-### If User Triggered `/plan-roblox <folder_path>`:
-Output the comprehensive Master Prompt in Markdown format tailored specifically to the analyzed map, following this structure:
+### Mode A: Full Architecture Mode (`/plan-roblox-full` or `/plan-roblox`)
+Synthesize and display the comprehensive Master Prompt:
 
 ```markdown
-# MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB (RAYFIELD MOBILE)
+# MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB FULL (RAYFIELD MOBILE)
 
 ## Formatting Constraint
 - Strictly DO NOT use emojis anywhere in the script, UI labels, or code comments.
@@ -73,7 +79,8 @@ Output the comprehensive Master Prompt in Markdown format tailored specifically 
 ## Context & Target Scope
 - Target Folder: <folder_path>
 - Place ID: <place_id>
-- Detected Core Mechanics: <list mechanics, e.g. Farming, Pets, Shops, Rebirths, Combat>
+- Detected Genre: <detected_genre>
+- Core Mechanics: <list all detected mechanics>
 - GUI Engine: Rayfield UI Library Mobile
 
 ## Reverse Engineered Intelligence
@@ -84,7 +91,6 @@ Output the comprehensive Master Prompt in Markdown format tailored specifically 
   - <remote_3:InvokeServer(...)>
 
 ## Script Hub UI Architecture (8-Tab Matrix)
-Detail every feature tailored to the discovered mechanics:
 1. Tab 1: Auto Farm & Main Loop (All auto-collection, auto-clicks, mob/resource farming)
 2. Tab 2: [Primary Game Mechanic] (e.g. Eggs/Pets, Tycoon Drops, Weapons, or Crafting)
 3. Tab 3: Management & Upgrades (Equip best, Inventory, Pet feeding, Upgrades)
@@ -95,61 +101,77 @@ Detail every feature tailored to the discovered mechanics:
 8. Tab 8: Utility & Safety (Anti-AFK, Auto Reconnect, Server Hop, Mobile Toggle Button)
 
 ## Server-Side Safety, Anti-Kick & Network Reliability Architecture
-To ensure the script runs smoothly without triggering server-side sanity checks, rate-limit kicks, or detection heuristics, the implementation MUST enforce the following safeguards:
-
-1. Dynamic Rate Limiting & Micro-Jitter:
-   - Enforce configurable delays between remote calls (minimum 0.1s to 0.35s).
-   - Inject randomized micro-jitter: task.wait(baseDelay + math.random() * 0.05) to prevent perfectly fixed interval patterns that server heuristics easily flag.
-
-2. Distance & Magnitude Sanity Checks:
-   - Before firing any interaction remotes, compute:
-     local dist = (Character.PrimaryPart.Position - Target.Position).Magnitude
-   - Validate that dist <= MaxInteractionDistance. If out of range, move or tween the character into proximity first.
-
-3. Strict Parameter Sanitization & Nil-Guards:
-   - Validate existence and parenthood: if not target or not target.Parent then return end.
-   - Ensure arguments strictly match expected types to prevent server runtime exceptions.
-   - Guard against firing remotes when required assets or currencies are unavailable.
-
-4. Server Cooldown Synchronization & Concurrency Guards:
-   - Use os.clock() timestamp tracking: if os.clock() - lastAction < cooldown then return end.
-   - Prevent overlapping calls to InvokeServer using mutex flags (isInvoking).
-
-5. Character Lifecycle & Respawn Safety:
-   - Monitor CharacterAdded and Humanoid.Died.
-   - Immediately pause loops while the character is dead, respawning, or loading assets.
-   - Do not attempt to fire movement or interaction remotes when Humanoid.Health <= 0.
-
-6. Nonce & Session Integrity Checks:
-   - Accurately calculate and pass expected time/nonce tokens (e.g. workspace:GetServerTimeNow()).
-
-7. Thread Isolation & Exception Handling:
-   - Wrap every remote call and proximity prompt trigger in pcall().
-   - Run features in independent task.spawn() loops.
-
-8. Complete, Production-Ready Luau:
-   - Provide the complete, unabbreviated .lua script code without placeholders, ready for immediate execution.
+- Enforce dynamic rate-limiting (0.1s - 0.35s) with randomized micro-jitter.
+- Magnitude and distance sanity checks before firing remotes.
+- Strict parameter sanitization and nil guards.
+- Timestamp cooldown synchronization (os.clock()) and InvokeServer mutex concurrency locks.
+- Character lifecycle hooks (pause on Humanoid.Died, resume on CharacterAdded).
+- Nonce and timestamp calculation preservation.
+- Error wrapping with pcall() and independent task.spawn() execution threads.
+- Complete, unabbreviated .lua script output with zero placeholders.
 ```
 
-After outputting the Master Prompt, inform the user:
-- Reply with `go th` to generate the complete script in Thai.
-- Reply with `go en` to generate the complete script in English.
-- Or use `/go-script <folder_path> [lang]` in the future for direct one-shot generation.
+Follow up with quick-start instructions:
+- Reply with `go th` to generate the full script in Thai.
+- Reply with `go en` to generate the full script in English.
+- Reply with `go-lite th` or `go-lite en` to switch to Lite script generation.
 
 ---
 
-### If User Triggered `/go-script <folder_path> [language]` (OR replied with `go th` / `go en`):
-DO NOT output the intermediate Master Prompt or planning text.
-Directly synthesize and output the complete, unabbreviated Luau Script Hub (.lua) file inside a code block following these rules:
+### Mode B: Lite Architecture Mode (`/plan-roblox-lite`)
+Synthesize and display the clean, essential-only Master Prompt:
+
+```markdown
+# MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB LITE (RAYFIELD MOBILE)
+
+## Formatting Constraint
+- Strictly DO NOT use emojis anywhere in the script, UI labels, or code comments.
+
+## Context & Target Scope
+- Target Folder: <folder_path>
+- Place ID: <place_id>
+- Detected Genre: <detected_genre>
+- Design Goal: Lightweight, simple to use, minimal resource consumption, high stability on mobile.
+- GUI Engine: Rayfield UI Library Mobile
+
+## Core Network Remotes (Essentials Only)
+- <list only the 3-5 most critical remotes for core gameplay>
+
+## Streamlined UI Architecture (4-Tab Layout)
+1. Tab 1: Main Auto Farm (Core primary loop with built-in safety delay)
+2. Tab 2: Teleports (Essential spawns, zones, and home/plot)
+3. Tab 3: Movement & Player (WalkSpeed slider, JumpPower slider, Infinite Jump, Noclip)
+4. Tab 4: Utility & Safety (Anti-AFK toggle, Mobile Draggable Button)
+
+## Server-Side Safety Architecture
+- Built-in rate limiting with micro-jitter (0.15s - 0.3s).
+- Distance verification before action triggers.
+- Safe pcall() wrapping and task.spawn() thread isolation.
+- Complete .lua script output with zero placeholders.
+```
+
+Follow up with quick-start instructions:
+- Reply with `go th` (or `go-lite th`) to generate the Lite script in Thai.
+- Reply with `go en` (or `go-lite en`) to generate the Lite script in English.
+- Reply with `go-full th` or `go-full en` to switch to Full script generation.
+
+---
+
+### Mode C: Direct One-Shot Script Generation (`/go-script-full` / `/go-script-lite` / `go th` / `go en`)
+DO NOT output any intermediate Master Prompt or planning text.
+Directly synthesize and output the complete, unabbreviated Luau Script Hub (.lua) file inside a code block:
 
 1. Language Localization:
-   - If language is `th` (or user said `go th`): Use clear Thai for Window title, Tab names, Section headers, Toggle/Button names, Notify descriptions, and code comments.
-   - If language is `en` (or user said `go en`): Use English for all UI labels, notifications, and code comments.
-   - Default language is Thai if omitted or unrecognized.
+   - `th` (or `go th`): All UI tabs, element titles, descriptions, notifications, and code comments in Thai.
+   - `en` (or `go en`): All UI tabs, element titles, descriptions, notifications, and code comments in English.
+   - Defaults to Thai if unspecified.
 
-2. Complete Implementation:
-   - Build all 8 tabs populated with features corresponding to the discovered game remotes and modules.
-   - Implement the draggable mobile floating open/close button ScreenGui.
-   - Fully integrate the Server-Side Safety Architecture (rate limiting, micro-jitter, distance checks, nil checks, cooldowns, pcall error trapping, and character lifecycle management).
-   - Provide 100% full, runnable Luau code with zero placeholders or omissions.
-   - Maintain zero emojis throughout the script.
+2. Scope Enforcement:
+   - If Full mode: Build all 8+ tabs with complete feature coverage.
+   - If Lite mode: Build the 4 streamlined tabs focusing on maximum performance, simple toggles, and zero clutter.
+
+3. Standards & Zero Emojis:
+   - Include the draggable mobile toggle button.
+   - Fully integrate all server-side safety safeguards.
+   - 100% full, runnable Luau code with zero placeholders or omissions.
+   - Strictly zero emojis across all code, strings, and output text.
