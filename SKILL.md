@@ -7,6 +7,9 @@ description: Analyzes a decompiled Roblox map folder (e.g. from Potassium or any
 
 This skill provides an automated workflow to inspect, reverse engineer, and generate an ultra-comprehensive Master Prompt and architecture for creating a Roblox Script Hub using **Rayfield UI Library (Mobile)** for any decompiled map.
 
+## Strict Formatting Directive
+- DO NOT use any emojis anywhere in the output, generated prompt, instructions, or code comments. Keep all output strictly professional and emoji-free.
+
 ## Trigger Syntax
 ```text
 /plan-roblox <folder_path>
@@ -54,6 +57,9 @@ The generated prompt **MUST** follow this exact structure:
 
 ```markdown
 # MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB (RAYFIELD MOBILE)
+
+## Formatting Constraint
+- Strictly DO NOT use emojis anywhere in the script, UI labels, or code comments.
 
 ## Context & Target Scope
 - Target Folder: <folder_path>
@@ -116,7 +122,12 @@ To ensure the script runs smoothly without triggering server-side sanity checks,
    - Provide the complete, unabbreviated .lua script code without placeholders, ready for immediate execution.
 ```
 
-### Step 4: Proactive Offer to Execute
-After presenting the tailored Master Prompt, inform the user:
-- You have direct access to their machine and the scanned scripts.
-- Offer to immediately write the complete, ready-to-run `.lua` file for them right away.
+### Step 4: Instant Execution Protocol (go <language>)
+Immediately after presenting the generated Master Prompt, instruct the user on how to trigger instant script generation:
+
+Provide clear instructions that the user can immediately generate the entire production script by replying with:
+- `go th` -> Generate the complete script with Thai language UI labels, notifications, and code comments.
+- `go en` -> Generate the complete script with English language UI labels, notifications, and code comments.
+- `go <language>` -> Generate the complete script in any specified language.
+
+When the user enters `go th`, `go en`, or any `go <language>` command, the AI must immediately take the analyzed architecture and write the complete, full-length `.lua` script hub without needing any further questions or confirmations.

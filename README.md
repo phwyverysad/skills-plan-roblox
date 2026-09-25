@@ -55,16 +55,24 @@ irm https://raw.githubusercontent.com/phwyverysad/skills-plan-roblox/master/inst
 
 ## Usage
 
+### Step 1: Analyze the Map & Generate the Architecture Prompt
 Once installed, open any supported AI Agent (Antigravity, Claude Code, Codex, or Cursor) and enter the slash command in the chat:
 
 ```text
 /plan-roblox <path_to_decompiled_map_folder>
 ```
 
-### Example:
+Example:
 ```text
 /plan-roblox C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534
 ```
+
+### Step 2: Instant Script Generation via "go <language>"
+Once the AI presents the Master Prompt and map architecture, you can trigger immediate full-script synthesis without extra questions by replying with:
+
+- `go th` -> Generate the complete ready-to-run script with Thai UI labels, notifications, and code comments.
+- `go en` -> Generate the complete ready-to-run script with English UI labels, notifications, and code comments.
+- `go <language>` -> Generate the complete script in your preferred language.
 
 ---
 
@@ -74,8 +82,10 @@ Once installed, open any supported AI Agent (Antigravity, Claude Code, Codex, or
 2. Network Mapping: Identifies RemoteEvents and RemoteFunctions, capturing real parameter signatures and calling conventions.
 3. Game Systems Extraction: Discovers GameData modules, GameServices, Controllers, UI frames, and core gameplay loops (Farming, Eggs/Pets, Shops, Rebirth, Combat).
 4. Master Prompt Synthesis: Produces an ultra-comprehensive Master Prompt tailored specifically to that map with an 8-tab Rayfield Mobile UI matrix.
-5. Server-Side Safety & Anti-Kick Integration: Automatically instructs the AI to enforce dynamic rate-limiting with micro-jitter, spatial distance sanity checks, strict nil/type guards, server cooldown synchronization, and character lifecycle management to prevent server-side kicks, telemetry flags, and rate-limit drops.
-6. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
+5. Server-Side Safety & Anti-Kick Integration: Enforces dynamic rate-limiting with micro-jitter, spatial distance sanity checks, strict nil/type guards, server cooldown synchronization, and character lifecycle management to prevent server-side kicks, telemetry flags, and rate-limit drops.
+6. Strictly Emoji-Free: Designed with clean, professional typography and zero emojis across all generated documents and code.
+7. Instant Language Dispatch: Supports rapid code generation via `go th`, `go en`, or `go <lang>`.
+8. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
 
 ---
 
