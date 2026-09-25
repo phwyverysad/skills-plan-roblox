@@ -26,6 +26,11 @@ if (-not (Test-Path $scriptsTarget)) {
     New-Item -ItemType Directory -Path $scriptsTarget -Force | Out-Null
 }
 
+$referencesTarget = "$skillTarget\references"
+if (-not (Test-Path $referencesTarget)) {
+    New-Item -ItemType Directory -Path $referencesTarget -Force | Out-Null
+}
+
 # 2. Download files
 Write-Host "[2/4] Downloading skill files from GitHub..." -ForegroundColor Cyan
 try {
@@ -34,11 +39,15 @@ try {
     
     Invoke-WebRequest -Uri "$repoRawBase/scripts/scan_roblox.ps1" -OutFile "$scriptsTarget\scan_roblox.ps1" -UseBasicParsing
     Write-Host "  -> Downloaded scripts/scan_roblox.ps1" -ForegroundColor Green
+
+    Invoke-WebRequest -Uri "$repoRawBase/references/Rayfield%20UI%20library%20Mobile.md" -OutFile "$referencesTarget\Rayfield UI library Mobile.md" -UseBasicParsing
+    Write-Host "  -> Downloaded references/Rayfield UI library Mobile.md" -ForegroundColor Green
 } catch {
     Write-Warning "Could not download directly from main branch. Attempting master branch..."
     try {
         Invoke-WebRequest -Uri "https://raw.githubusercontent.com/phwyverysad/skills-plan-roblox/master/SKILL.md" -OutFile "$skillTarget\SKILL.md" -UseBasicParsing
         Invoke-WebRequest -Uri "https://raw.githubusercontent.com/phwyverysad/skills-plan-roblox/master/scripts/scan_roblox.ps1" -OutFile "$scriptsTarget\scan_roblox.ps1" -UseBasicParsing
+        Invoke-WebRequest -Uri "https://raw.githubusercontent.com/phwyverysad/skills-plan-roblox/master/references/Rayfield%20UI%20library%20Mobile.md" -OutFile "$referencesTarget\Rayfield UI library Mobile.md" -UseBasicParsing
         Write-Host "  -> Downloaded successfully from master branch!" -ForegroundColor Green
     } catch {
         Write-Error "Failed to download files: $_"
