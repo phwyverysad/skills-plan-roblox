@@ -39,7 +39,7 @@ Capture and parse the resulting JSON data, which includes:
 
 ### Step 2: Read Rayfield UI Mobile Documentation
 Ensure the generated plan aligns strictly with the Rayfield UI Mobile specification:
-- Check `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md` (or fallback to built-in Rayfield Mobile best practices).
+- Check `references/Rayfield UI library Mobile.md` bundled with this skill (or local path `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`).
 - Verify standard Rayfield Mobile features:
   - `loadstring(game:HttpGet('https://sirius.menu/rayfield'))()`
   - `Rayfield:CreateWindow()` with `ConfigurationSaving`, `LoadingTitle`, `Theme`
@@ -59,7 +59,7 @@ The generated prompt **MUST** follow this exact structure:
 - Target Folder: <folder_path>
 - Place ID: <place_id>
 - Detected Core Mechanics: <list mechanics, e.g. Farming, Pets, Shops, Rebirths, Combat>
-- GUI Engine: Rayfield UI Library Mobile (D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md)
+- GUI Engine: Rayfield UI Library Mobile
 
 ## Reverse Engineered Intelligence
 - Discovered Modules: <list top GameData modules>
@@ -79,11 +79,41 @@ Detail every feature tailored to the discovered mechanics:
 7. Tab 7: Movement & Character Enhancements (WalkSpeed, JumpPower, Infinite Jump, Noclip, Mobile Fly)
 8. Tab 8: Utility & Safety (Anti-AFK, Auto Reconnect, Server Hop, Mobile Toggle Button)
 
-## Anti-Kick & Thread Safety Directives
-- Wrap all remote calls in pcall()
-- Thread every loop with task.spawn()
-- Rate limit loops with task.wait() to prevent server flood/kick
-- Full Luau script output without placeholders
+## Server-Side Safety, Anti-Kick & Network Reliability Architecture
+To ensure the script runs smoothly without triggering server-side sanity checks, rate-limit kicks, or detection heuristics, the implementation MUST enforce the following safeguards:
+
+1. Dynamic Rate Limiting & Micro-Jitter:
+   - Enforce configurable delays between remote calls (minimum 0.1s to 0.35s).
+   - Inject randomized micro-jitter: task.wait(baseDelay + math.random() * 0.05) to prevent perfectly fixed interval patterns that server heuristics easily flag.
+
+2. Distance & Magnitude Sanity Checks:
+   - Before firing any interaction remotes (e.g. collecting, picking up, claiming, opening), compute:
+     local dist = (Character.PrimaryPart.Position - Target.Position).Magnitude
+   - Validate that dist <= MaxInteractionDistance. If the target is out of range, smoothly move or tween the character into proximity first rather than firing across the map.
+
+3. Strict Parameter Sanitization & Nil-Guards:
+   - Validate existence and parenthood: if not target or not target.Parent then return end.
+   - Ensure arguments strictly match expected types (e.g. number vs string) to prevent server runtime exceptions that can trigger error telemetry or disconnect the player.
+   - Guard against firing remotes when the required assets or currencies are not available.
+
+4. Server Cooldown Synchronization & Concurrency Guards:
+   - Use os.clock() timestamp tracking: if os.clock() - lastAction < cooldown then return end.
+   - Prevent overlapping calls to InvokeServer (blocking yield) by using mutex flags (isInvoking) to prevent thread hangs or server-side call queue exhaustion.
+
+5. Character Lifecycle & Respawn Safety:
+   - Monitor CharacterAdded and Humanoid.Died.
+   - Immediately pause loops while the character is dead, respawning, or loading assets (LocalPlayer.Character:WaitForChild("HumanoidRootPart")).
+   - Do not attempt to fire movement or interaction remotes when Humanoid.Health <= 0.
+
+6. Nonce & Session Integrity Checks:
+   - If the game utilizes nonces, timestamp verification, or server-provided tokens (check extracted RemoteCallExamples), preserve and accurately calculate them (e.g. workspace:GetServerTimeNow()).
+
+7. Thread Isolation & Exception Handling:
+   - Wrap every remote call and proximity prompt trigger in pcall().
+   - Run features in independent task.spawn() loops so that an error in one feature never crashes the hub or other background processes.
+
+8. Complete, Production-Ready Luau:
+   - Provide the complete, unabbreviated .lua script code without placeholders, ready for immediate execution.
 ```
 
 ### Step 4: Proactive Offer to Execute

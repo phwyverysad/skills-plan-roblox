@@ -74,7 +74,8 @@ Once installed, open any supported AI Agent (Antigravity, Claude Code, Codex, or
 2. Network Mapping: Identifies RemoteEvents and RemoteFunctions, capturing real parameter signatures and calling conventions.
 3. Game Systems Extraction: Discovers GameData modules, GameServices, Controllers, UI frames, and core gameplay loops (Farming, Eggs/Pets, Shops, Rebirth, Combat).
 4. Master Prompt Synthesis: Produces an ultra-comprehensive Master Prompt tailored specifically to that map with an 8-tab Rayfield Mobile UI matrix.
-5. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
+5. Server-Side Safety & Anti-Kick Integration: Automatically instructs the AI to enforce dynamic rate-limiting with micro-jitter, spatial distance sanity checks, strict nil/type guards, server cooldown synchronization, and character lifecycle management to prevent server-side kicks, telemetry flags, and rate-limit drops.
+6. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
 
 ---
 
