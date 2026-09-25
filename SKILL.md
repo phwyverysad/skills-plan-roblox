@@ -18,7 +18,7 @@ Example:
 
 ---
 
-## 🛠️ Step-by-Step Procedure for the Agent
+## Step-by-Step Procedure for the Agent
 
 When the user triggers `/plan-roblox <folder_path>`:
 
@@ -53,36 +53,36 @@ Synthesize a comprehensive, production-grade Master Prompt in Markdown format ta
 The generated prompt **MUST** follow this exact structure:
 
 ```markdown
-# 🚀 MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB (RAYFIELD MOBILE)
+# MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB (RAYFIELD MOBILE)
 
-## 📌 Context & Target Scope
-- **Target Folder:** `<folder_path>`
-- **Place ID:** `<place_id>`
-- **Detected Core Mechanics:** `<list mechanics, e.g. Farming, Pets, Shops, Rebirths, Combat>`
-- **GUI Engine:** Rayfield UI Library Mobile (`D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`)
+## Context & Target Scope
+- Target Folder: <folder_path>
+- Place ID: <place_id>
+- Detected Core Mechanics: <list mechanics, e.g. Farming, Pets, Shops, Rebirths, Combat>
+- GUI Engine: Rayfield UI Library Mobile (D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md)
 
-## 🔍 Reverse Engineered Intelligence
-- **Discovered Modules:** `<list top GameData modules>`
-- **Core Network Remotes & Call Signatures:**
-  - `<remote_1:FireServer(...)>`
-  - `<remote_2:FireServer(...)>`
-  - `<remote_3:InvokeServer(...)>`
+## Reverse Engineered Intelligence
+- Discovered Modules: <list top GameData modules>
+- Core Network Remotes & Call Signatures:
+  - <remote_1:FireServer(...)>
+  - <remote_2:FireServer(...)>
+  - <remote_3:InvokeServer(...)>
 
-## 🗂️ Script Hub UI Architecture (8-Tab Matrix)
+## Script Hub UI Architecture (8-Tab Matrix)
 Detail every feature tailored to the discovered mechanics:
-1. **Tab 1: Auto Farm & Main Loop** (All auto-collection, auto-clicks, mob/resource farming)
-2. **Tab 2: [Primary Game Mechanic]** (e.g. Eggs/Pets, Tycoon Drops, Weapons, or Crafting)
-3. **Tab 3: Management & Upgrades** (Equip best, Inventory, Pet feeding, Upgrades)
-4. **Tab 4: Economy & Shop Automation** (Auto buy items, auto claim rewards, auto rebirth)
-5. **Tab 5: Teleports & World Exploration** (Teleport to Spawns, Zones, Shops, Players)
-6. **Tab 6: Visuals & ESP** (BillboardGui & Highlight for items, resources, players, Fullbright)
-7. **Tab 7: Movement & Character Enhancements** (WalkSpeed, JumpPower, Infinite Jump, Noclip, Mobile Fly)
-8. **Tab 8: Utility & Safety** (Anti-AFK, Auto Reconnect, Server Hop, Mobile Toggle Button)
+1. Tab 1: Auto Farm & Main Loop (All auto-collection, auto-clicks, mob/resource farming)
+2. Tab 2: [Primary Game Mechanic] (e.g. Eggs/Pets, Tycoon Drops, Weapons, or Crafting)
+3. Tab 3: Management & Upgrades (Equip best, Inventory, Pet feeding, Upgrades)
+4. Tab 4: Economy & Shop Automation (Auto buy items, auto claim rewards, auto rebirth)
+5. Tab 5: Teleports & World Exploration (Teleport to Spawns, Zones, Shops, Players)
+6. Tab 6: Visuals & ESP (BillboardGui & Highlight for items, resources, players, Fullbright)
+7. Tab 7: Movement & Character Enhancements (WalkSpeed, JumpPower, Infinite Jump, Noclip, Mobile Fly)
+8. Tab 8: Utility & Safety (Anti-AFK, Auto Reconnect, Server Hop, Mobile Toggle Button)
 
-## 🛡️ Anti-Kick & Thread Safety Directives
-- Wrap all remote calls in `pcall()`
-- Thread every loop with `task.spawn()`
-- Rate limit loops with `task.wait()` to prevent server flood/kick
+## Anti-Kick & Thread Safety Directives
+- Wrap all remote calls in pcall()
+- Thread every loop with task.spawn()
+- Rate limit loops with task.wait() to prevent server flood/kick
 - Full Luau script output without placeholders
 ```
 
