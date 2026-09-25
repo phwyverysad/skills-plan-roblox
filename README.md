@@ -55,8 +55,32 @@ irm https://raw.githubusercontent.com/phwyverysad/skills-plan-roblox/master/inst
 
 ## Usage
 
-### Step 1: Analyze the Map & Generate the Architecture Prompt
-Once installed, open any supported AI Agent (Antigravity, Claude Code, Codex, or Cursor) and enter the slash command in the chat:
+The skill provides two execution modes depending on your workflow:
+
+### Mode 1: Direct Script Generation (One-Shot without Prompt Output)
+
+Use this command when you want the AI to immediately scan the map and generate the full, ready-to-run `.lua` Script Hub file directly, without outputting any intermediate planning prompt:
+
+```text
+/go-script <path_to_decompiled_map_folder> [language]
+```
+
+- Append `th` for Thai UI labels, notifications, and code comments.
+- Append `en` for English UI labels, notifications, and code comments.
+
+Examples:
+```text
+/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 th
+```
+```text
+/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 en
+```
+
+---
+
+### Mode 2: Two-Step Architecture & Master Prompt Mode
+
+Use this command when you want to review the full reverse-engineered analysis and Master Prompt first:
 
 ```text
 /plan-roblox <path_to_decompiled_map_folder>
@@ -67,12 +91,9 @@ Example:
 /plan-roblox C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534
 ```
 
-### Step 2: Instant Script Generation via "go <language>"
-Once the AI presents the Master Prompt and map architecture, you can trigger immediate full-script synthesis without extra questions by replying with:
-
-- `go th` -> Generate the complete ready-to-run script with Thai UI labels, notifications, and code comments.
-- `go en` -> Generate the complete ready-to-run script with English UI labels, notifications, and code comments.
-- `go <language>` -> Generate the complete script in your preferred language.
+After reviewing the prompt, trigger immediate script synthesis by replying with:
+- `go th` -> Generate the complete script in Thai.
+- `go en` -> Generate the complete script in English.
 
 ---
 
@@ -81,11 +102,10 @@ Once the AI presents the Master Prompt and map architecture, you can trigger imm
 1. High-Speed Static Analysis: Scans the target folder, detects Place ID, and indexes all Lua/Luau scripts in seconds.
 2. Network Mapping: Identifies RemoteEvents and RemoteFunctions, capturing real parameter signatures and calling conventions.
 3. Game Systems Extraction: Discovers GameData modules, GameServices, Controllers, UI frames, and core gameplay loops (Farming, Eggs/Pets, Shops, Rebirth, Combat).
-4. Master Prompt Synthesis: Produces an ultra-comprehensive Master Prompt tailored specifically to that map with an 8-tab Rayfield Mobile UI matrix.
+4. Direct Script Synthesis (/go-script): Bypasses prompt output to produce the full-length ready-to-run Luau script hub directly.
 5. Server-Side Safety & Anti-Kick Integration: Enforces dynamic rate-limiting with micro-jitter, spatial distance sanity checks, strict nil/type guards, server cooldown synchronization, and character lifecycle management to prevent server-side kicks, telemetry flags, and rate-limit drops.
 6. Strictly Emoji-Free: Designed with clean, professional typography and zero emojis across all generated documents and code.
-7. Instant Language Dispatch: Supports rapid code generation via `go th`, `go en`, or `go <lang>`.
-8. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
+7. Offline Documentation Bundled: Includes the complete offline Rayfield UI Mobile reference guide so the agent can generate accurate code without external lookups.
 
 ---
 

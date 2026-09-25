@@ -1,59 +1,68 @@
 ---
 name: plan-roblox
-description: Analyzes a decompiled Roblox map folder (e.g. from Potassium or any decompiler) and generates an ultra-comprehensive reverse engineering prompt and complete Rayfield UI Mobile script hub architecture for that specific map. Use when the user types /plan-roblox <folder_path>.
+description: Analyzes a decompiled Roblox map folder and generates either an ultra-comprehensive reverse engineering prompt (/plan-roblox <folder_path>) or immediately writes the complete ready-to-run Rayfield UI Mobile script hub without prompt generation (/go-script <folder_path> [language]).
 ---
 
 # Plan Roblox: Decompiled Map Reverse Engineering & Script Hub Architect
 
-This skill provides an automated workflow to inspect, reverse engineer, and generate an ultra-comprehensive Master Prompt and architecture for creating a Roblox Script Hub using **Rayfield UI Library (Mobile)** for any decompiled map.
+This skill provides automated workflows to inspect, reverse engineer, and generate either an ultra-comprehensive Master Prompt or directly write a complete production-grade Roblox Script Hub using Rayfield UI Library (Mobile) for any decompiled map.
 
 ## Strict Formatting Directive
-- DO NOT use any emojis anywhere in the output, generated prompt, instructions, or code comments. Keep all output strictly professional and emoji-free.
+- DO NOT use any emojis anywhere in the output, generated prompt, instructions, GUI titles, or code comments. Keep all output strictly professional and emoji-free.
 
-## Trigger Syntax
+## Supported Commands
+
+### Command 1: Architecture & Master Prompt Mode
 ```text
 /plan-roblox <folder_path>
 ```
-Example:
+Scans the decompiled map folder and outputs an ultra-comprehensive Master Prompt with full reverse-engineered intelligence and an 8-tab feature matrix.
+
+### Command 2: Direct Script Generation Mode (One-Shot)
 ```text
-/plan-roblox C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534
+/go-script <folder_path> [language]
 ```
+Bypasses displaying the intermediate prompt and immediately synthesizes and writes the complete ready-to-run Luau script hub file in the specified language (e.g. `th` for Thai or `en` for English).
+
+Examples:
+- `/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 th`
+- `/go-script C:\Users\Administrator\AppData\Local\Potassium\workspace\scripts_124216119978534 en`
 
 ---
 
 ## Step-by-Step Procedure for the Agent
 
-When the user triggers `/plan-roblox <folder_path>`:
-
-### Step 1: Run the Automated Scanner Script
-Execute the helper PowerShell script located in this skill:
+### Step 1: Automated Static Scanning
+When either command is triggered with `<folder_path>`, execute the helper PowerShell script:
 ```powershell
 powershell -ExecutionPolicy Bypass -File "$HOME\.gemini\config\plugins\superpowers\skills\plan-roblox\scripts\scan_roblox.ps1" -TargetFolder "<folder_path>"
 ```
-Capture and parse the resulting JSON data, which includes:
-- `PlaceID`: Extracted from `_summary.txt`
-- `TotalLuaFiles`: Count of decompiled scripts
-- `GameDataModules`: Key tables (Items, Eggs, Pets, Shops, Rebirths, etc.)
-- `Services`: Game services and controllers
-- `RemotesFound`: Discovered `RemoteEvent` and `RemoteFunction` names
-- `RemoteCallExamples`: Real syntax examples of `FireServer` / `InvokeServer`
-- `UIComponents`: Detected ScreenGuis, Frames, Tabs
-- `KeyMechanicsDetected`: High-level detected gameplay loops
+Capture and parse the resulting JSON data:
+- PlaceID: Extracted from _summary.txt
+- TotalLuaFiles: Total count of decompiled scripts
+- GameDataModules: Tables (Items, Eggs, Pets, Shops, Rebirths, etc.)
+- Services: Game services and controllers
+- RemotesFound: Discovered RemoteEvent and RemoteFunction names
+- RemoteCallExamples: Real syntax examples of FireServer / InvokeServer calls
+- UIComponents: Detected ScreenGuis, Frames, Tabs
+- KeyMechanicsDetected: Detected gameplay loops
 
 ### Step 2: Read Rayfield UI Mobile Documentation
-Ensure the generated plan aligns strictly with the Rayfield UI Mobile specification:
-- Check `references/Rayfield UI library Mobile.md` bundled with this skill (or local path `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`).
-- Verify standard Rayfield Mobile features:
-  - `loadstring(game:HttpGet('https://sirius.menu/rayfield'))()`
-  - `Rayfield:CreateWindow()` with `ConfigurationSaving`, `LoadingTitle`, `Theme`
+Ensure the generated script or plan aligns strictly with the Rayfield UI Mobile specification:
+- Read `references/Rayfield UI library Mobile.md` bundled with this skill (or local path `D:\Users\woran\Documents\My_Project\Roblox\ScriptRoblox\script\Rayfield UI library Mobile.md`).
+- Utilize standard Rayfield Mobile elements:
+  - loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+  - Rayfield:CreateWindow() with ConfigurationSaving, LoadingTitle, Theme
   - Mobile Floating Action Button (draggable ScreenGui toggle button)
-  - Elements: `CreateTab`, `CreateSection`, `CreateToggle`, `CreateSlider`, `CreateDropdown`, `CreateButton`, `CreateInput`, `CreateKeybind`
-  - Status updates: `Rayfield:Notify()`
+  - Elements: CreateTab, CreateSection, CreateToggle, CreateSlider, CreateDropdown, CreateButton, CreateInput, CreateKeybind
+  - Status updates: Rayfield:Notify()
 
-### Step 3: Generate the Map-Specific Ultra Master Prompt
-Synthesize a comprehensive, production-grade Master Prompt in Markdown format tailored **specifically to the analyzed map**. 
+---
 
-The generated prompt **MUST** follow this exact structure:
+## Branching Logic Based on Command
+
+### If User Triggered `/plan-roblox <folder_path>`:
+Output the comprehensive Master Prompt in Markdown format tailored specifically to the analyzed map, following this structure:
 
 ```markdown
 # MASTER PROMPT: [Game Name / Place ID] SCRIPT HUB (RAYFIELD MOBILE)
@@ -93,41 +102,54 @@ To ensure the script runs smoothly without triggering server-side sanity checks,
    - Inject randomized micro-jitter: task.wait(baseDelay + math.random() * 0.05) to prevent perfectly fixed interval patterns that server heuristics easily flag.
 
 2. Distance & Magnitude Sanity Checks:
-   - Before firing any interaction remotes (e.g. collecting, picking up, claiming, opening), compute:
+   - Before firing any interaction remotes, compute:
      local dist = (Character.PrimaryPart.Position - Target.Position).Magnitude
-   - Validate that dist <= MaxInteractionDistance. If the target is out of range, smoothly move or tween the character into proximity first rather than firing across the map.
+   - Validate that dist <= MaxInteractionDistance. If out of range, move or tween the character into proximity first.
 
 3. Strict Parameter Sanitization & Nil-Guards:
    - Validate existence and parenthood: if not target or not target.Parent then return end.
-   - Ensure arguments strictly match expected types (e.g. number vs string) to prevent server runtime exceptions that can trigger error telemetry or disconnect the player.
-   - Guard against firing remotes when the required assets or currencies are not available.
+   - Ensure arguments strictly match expected types to prevent server runtime exceptions.
+   - Guard against firing remotes when required assets or currencies are unavailable.
 
 4. Server Cooldown Synchronization & Concurrency Guards:
    - Use os.clock() timestamp tracking: if os.clock() - lastAction < cooldown then return end.
-   - Prevent overlapping calls to InvokeServer (blocking yield) by using mutex flags (isInvoking) to prevent thread hangs or server-side call queue exhaustion.
+   - Prevent overlapping calls to InvokeServer using mutex flags (isInvoking).
 
 5. Character Lifecycle & Respawn Safety:
    - Monitor CharacterAdded and Humanoid.Died.
-   - Immediately pause loops while the character is dead, respawning, or loading assets (LocalPlayer.Character:WaitForChild("HumanoidRootPart")).
+   - Immediately pause loops while the character is dead, respawning, or loading assets.
    - Do not attempt to fire movement or interaction remotes when Humanoid.Health <= 0.
 
 6. Nonce & Session Integrity Checks:
-   - If the game utilizes nonces, timestamp verification, or server-provided tokens (check extracted RemoteCallExamples), preserve and accurately calculate them (e.g. workspace:GetServerTimeNow()).
+   - Accurately calculate and pass expected time/nonce tokens (e.g. workspace:GetServerTimeNow()).
 
 7. Thread Isolation & Exception Handling:
    - Wrap every remote call and proximity prompt trigger in pcall().
-   - Run features in independent task.spawn() loops so that an error in one feature never crashes the hub or other background processes.
+   - Run features in independent task.spawn() loops.
 
 8. Complete, Production-Ready Luau:
    - Provide the complete, unabbreviated .lua script code without placeholders, ready for immediate execution.
 ```
 
-### Step 4: Instant Execution Protocol (go <language>)
-Immediately after presenting the generated Master Prompt, instruct the user on how to trigger instant script generation:
+After outputting the Master Prompt, inform the user:
+- Reply with `go th` to generate the complete script in Thai.
+- Reply with `go en` to generate the complete script in English.
+- Or use `/go-script <folder_path> [lang]` in the future for direct one-shot generation.
 
-Provide clear instructions that the user can immediately generate the entire production script by replying with:
-- `go th` -> Generate the complete script with Thai language UI labels, notifications, and code comments.
-- `go en` -> Generate the complete script with English language UI labels, notifications, and code comments.
-- `go <language>` -> Generate the complete script in any specified language.
+---
 
-When the user enters `go th`, `go en`, or any `go <language>` command, the AI must immediately take the analyzed architecture and write the complete, full-length `.lua` script hub without needing any further questions or confirmations.
+### If User Triggered `/go-script <folder_path> [language]` (OR replied with `go th` / `go en`):
+DO NOT output the intermediate Master Prompt or planning text.
+Directly synthesize and output the complete, unabbreviated Luau Script Hub (.lua) file inside a code block following these rules:
+
+1. Language Localization:
+   - If language is `th` (or user said `go th`): Use clear Thai for Window title, Tab names, Section headers, Toggle/Button names, Notify descriptions, and code comments.
+   - If language is `en` (or user said `go en`): Use English for all UI labels, notifications, and code comments.
+   - Default language is Thai if omitted or unrecognized.
+
+2. Complete Implementation:
+   - Build all 8 tabs populated with features corresponding to the discovered game remotes and modules.
+   - Implement the draggable mobile floating open/close button ScreenGui.
+   - Fully integrate the Server-Side Safety Architecture (rate limiting, micro-jitter, distance checks, nil checks, cooldowns, pcall error trapping, and character lifecycle management).
+   - Provide 100% full, runnable Luau code with zero placeholders or omissions.
+   - Maintain zero emojis throughout the script.
